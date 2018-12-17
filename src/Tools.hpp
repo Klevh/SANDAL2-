@@ -5,6 +5,8 @@
 #include <string>
 
 namespace SANDAL2{
+    using FLIP = SANDAL2_FLIP;
+    
     struct Color{
 	int r;
 	int g;

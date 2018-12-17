@@ -53,9 +53,6 @@ namespace SANDAL2{
 	void setTextQuality(int quality);
 	void setText(const char * text);
 	void setTextStyle(int style);
-	// image 
-	void setImage(const char * image);
-	void setImageTexture(SDL_Texture * image);
 	// entry
 	void setSize(int min, int max);
 	void setScripted(bool isScripted);
