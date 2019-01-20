@@ -9,7 +9,7 @@ SANDAL2::Element::Element(::Element * self)
     :self_(self)
     ,data_(NULL)
     ,freeData_(NULL)
-    ,isAllocated(false)
+    ,isAllocated(self != NULL)
 {
     setDataElement(self, this);
     setFreeDataElement(self, true_freeData);
@@ -19,12 +19,6 @@ SANDAL2::Element::~Element(){
     if(data_ && freeData_){
 	freeData_(data_);
     }
-}
-
-/*virtual*/ void * SANDAL2::Block::operator new(size_t s){
-    SANDAL2::Element * e = malloc(s);
-    e->isAllocated = true;
-    return (void *)e;
 }
 // ---------------------------------------------------------
 
@@ -91,6 +85,80 @@ bool SANDAL2::Element::isSelected() const{
 
     return selected;
 }
+
+SANDAL2::FLIP SANDAL2::Element::getFlipState() const{
+    SANDAL2::FLIP flip;
+
+    SANDAL2PP_GENERIC_SETTER(getFlipStateElement,
+			     "Failed to get Flip state",
+			     &flip);
+
+    return flip;
+}
+
+float SANDAL2::Element::getAngle() const{
+    float angle = 0;
+
+    SANDAL2PP_GENERIC_SETTER(getAngleElement,
+			     "Failed to get angle",
+			     &angle);
+
+    return angle;
+}
+
+SANDAL2::Point SANDAL2::Element::getRotationPoint() const{
+    float x, y;
+
+    SANDAL2PP_GENERIC_SETTER(getRotationPointElement,
+			     "Failed to get rotation point",
+			     &x, &y);
+
+    return SANDAL2::Point(x, y);
+}
+
+float SANDAL2::Element::getRotationSpeed() const{
+    float rotSpeed = 0;
+
+    SANDAL2PP_GENERIC_SETTER(getRotationSpeedElement,
+			     "Failed to get rotation speed",
+			     &rotSpeed);
+
+    return rotSpeed;
+}
+
+int SANDAL2::Element::getTextStyle() const{
+    int angle = 0;
+
+    SANDAL2PP_GENERIC_SETTER(getAngleElement,
+			     "Failed to get angle",
+			     &angle);
+
+    return angle;
+}
+
+std::string SANDAL2::Element::getText() const{
+    char * s;
+
+    SANDAL2PP_GENERIC_SETTER(getTextElement,
+			     "Failed to get text of element",
+			     &s);
+
+    std::string result(s);
+
+    free(s);
+
+    return result;
+}
+
+SANDAL2::Color SANDAL2::Element::getColor() const{
+    int color[4];
+
+    SANDAL2PP_GENERIC_SETTER(getColorElement,
+			     "Failed to get color of element",
+			     color);
+
+    return SANDAL2::Color(color);
+}
 // ---------------------------------------------------------
 
 
@@ -142,6 +210,24 @@ void SANDAL2::Element::setData(void * d){
 void SANDAL2::Element::setFreeData(void (*freeData)(void *)){
     freeData_ = freeData;
 }
+
+void SANDAL2::Element::setRotationSpeed(float speed);
+void SANDAL2::Element::setAngle(float angle);
+void SANDAL2::Element::setRotationPoint(const SANDAL2::Point& p);
+void SANDAL2::Element::setAnimation(int animationCode);
+void SANDAL2::Element::setSpriteAnimation(int spriteCode);
+void SANDAL2::Element::setFlipState(FLIP state);
+void SANDAL2::Element::setColor(const SANDAL2::Color& color);
+void SANDAL2::Element::setImage(const char * imagePath);
+void SANDAL2::Element::setImageTexture(SDL_Texture * image);
+void SANDAL2::Element::setTextSize(float textSize);
+void SANDAL2::Element::setFont(const char * font);
+void SANDAL2::Element::setTextColor(const SANDAL2::Color& r);
+void SANDAL2::Element::setTextQuality(int quality);
+void SANDAL2::Element::setText(const char * text);
+void SANDAL2::Element::setTextStyle(int style);
+void SANDAL2::Element::setSize(int min, int max);
+void SANDAL2::Element::setScripted(bool isScripted);
 // ---------------------------------------------------------
 
 
@@ -193,6 +279,20 @@ void SANDAL2::Element::clearSons(){
     SANDAL2PP_GENERIC_SETTER(clearElementToElement,
 			     "Failed to remove all sons");
 }
+
+// void SANDAL2::Element::addClickable(SANDAL2::Clickable& c);
+// void SANDAL2::Element::addClickable(SANDAL2::Clickable * c);
+// void SANDAL2::Element::addAnimation(SANDAL2::Animation& a);
+// void SANDAL2::Element::addAnimation(SANDAL2::Animation * a);
+void SANDAL2::Element::delAnimation(int animationCode);
+void SANDAL2::Element::addRotationSpeed(float speed);
+void SANDAL2::Element::addAngle(float angle);
+void SANDAL2::Element::nextSprit();
+void SANDAL2::Element::previousSprit();
+void SANDAL2::Element::nextAnimation();
+void SANDAL2::Element::previousAnimation();
+void SANDAL2::Element::addChar(char c);
+void SANDAL2::Element::delChar();
 // ---------------------------------------------------------
 
 

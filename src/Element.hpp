@@ -5,12 +5,19 @@
 
 #include <cstdlib>
 
+#include <string>
+
 #include "Tools.hpp"
 
-namespace SANDAL2{    
-    // Classe parente element
-    // deux enfants (avec / sans image)
-    // 7 enfants (chaque element), ou moin que 7
+/* TODO:
+     Iterator on this element
+     Iterator on all elements of a display code
+     class Animation
+     class Clickable
+     all sub classes of Element (block, text, ...)
+ */
+
+namespace SANDAL2{
     class Element{
 	void      * data_;
 	void     (* freeData_)(void *);
@@ -22,8 +29,7 @@ namespace SANDAL2{
     public:
 	// Constructor(s) / Destructor / operators
 	Element(::Element * self);
-	virtual ~Element();
-	void * operator new(size_t s);
+	virtual ~Element() = 0;
 	
 	// Getters
 	bool isDisplaied() const;
@@ -33,9 +39,16 @@ namespace SANDAL2{
 	float getHeight() const;
 	void * getData() const;
 	bool isSelected() const;
+	// image
+	FLIP getFlipState() const;
+	float getAngle() const;
+        Point getRotationPoint() const;
+	float getRotationSpeed() const;
 	// text
 	int getTextStyle() const;
-	const char * getTextElement() const;
+	std::string getText() const;
+	// block
+	Color getColor() const;
 
 	// setters
 	void setX(float x);
@@ -46,10 +59,21 @@ namespace SANDAL2{
 	void setPlan(int displayCode, int plan);
 	void setData(void * d);
 	void setFreeData(void (*freeData)(void *));
+	void setRotationSpeed(float speed);
+	void setAngle(float angle);
+	void setRotationPoint(const Point& p);
+	void setAnimation(int animationCode);
+	void setSpriteAnimation(int spriteCode);
+	void setFlipState(FLIP state);
+	// block
+	void setColor(const Color& color);
+	// Image
+	void setImage(const char * imagePath);
+	void setImageTexture(SDL_Texture * image);
 	// text
 	void setTextSize(float textSize);
 	void setFont(const char * font);
-	void setTextColor(Color r);
+	void setTextColor(const Color& r);
 	void setTextQuality(int quality);
 	void setText(const char * text);
 	void setTextStyle(int style);
@@ -66,6 +90,17 @@ namespace SANDAL2{
 	void delSon(Element * e);
 	void delSon(Element& e);
 	void clearSons();
+	// void addClickable(Clickable& c);
+	// void addClickable(Clickable * c);
+	// void addAnimation(Animation& a);
+	// void addAnimation(Animation * a);
+	void delAnimation(int animationCode);
+	void addRotationSpeed(float speed);
+	void addAngle(float angle);
+	void nextSprit();
+	void previousSprit();
+	void nextAnimation();
+	void previousAnimation();
 	// entry
 	void addChar(char c);
 	void delChar();
